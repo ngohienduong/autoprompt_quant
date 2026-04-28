@@ -1,0 +1,153 @@
+WARNING:tensorflow:From C:\Users\User\anaconda3\Lib\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+[VN30] Copied checkpoint: clustering.pkl
+[VN30] Copied checkpoint: oos_results.pkl
+[VN30] Copied checkpoint: price_data.pkl
+[VN30] Copied checkpoint: prompts_deepseek.pkl
+[VN30] Copied checkpoint: prompts_gemma.pkl
+[VN30] Copied checkpoint: prompts_llama.pkl
+[VN30] Copied checkpoint: prompts_mistral.pkl
+[VN30] Copied checkpoint: prompts_qwen.pkl
+[VN30] Copied checkpoint: strats_deepseek.pkl
+[VN30] Copied checkpoint: strats_gemma.pkl
+[VN30] Copied checkpoint: strats_llama.pkl
+[VN30] Copied checkpoint: strats_mistral.pkl
+[VN30] Copied checkpoint: strats_qwen.pkl
+[VN30] Copied CSV: cross_model.csv
+[VN30] Copied CSV: oos_summary.csv
+[VN30] Loaded 30 symbols from cache.
+2026-04-25 00:12:05,092 INFO === AutoPrompt-Quant [VN30] starting ===
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\User\anaconda3\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Users\User\anaconda3\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 64: character maps to <undefined>
+Call stack:
+  File "C:\Users\User\Desktop\RMIT_Research\autoprompt_quant\experiments_reproducible\run_vn30.py", line 114, in <module>
+    run_pipeline(
+  File "C:\Users\User\Desktop\RMIT_Research\autoprompt_quant\experiments_reproducible\src\shared.py", line 629, in run_pipeline
+    log.info(f'Symbols: {len(price_data)} loaded | IS: {is_start}\u2192{is_end} '
+Message: 'Symbols: 30 loaded | IS: 2018-01-01\u21922020-12-31 | OOS: 8 windows | TC=0.0015 | ann=252'
+Arguments: ()
+2026-04-25 00:12:05,106 INFO Ollama models available: ['deepseek-coder-v2:16b', 'qwen2.5-coder:14b', 'gemma2:9b', 'llama3.1:8b', 'mistral:7b']
+2026-04-25 00:12:05,106 INFO === STAGE 1: Meta-agent prompt generation ===
+2026-04-25 00:12:05,107 INFO [deepseek] Loaded 37 prompts from checkpoint
+2026-04-25 00:12:05,108 INFO [qwen] Loaded 26 prompts from checkpoint
+2026-04-25 00:12:05,108 INFO [gemma] Loaded 18 prompts from checkpoint
+2026-04-25 00:12:05,109 INFO [llama] Loaded 50 prompts from checkpoint
+2026-04-25 00:12:05,109 INFO [mistral] Loaded 50 prompts from checkpoint
+2026-04-25 00:12:05,110 INFO Total prompts generated: 181
+2026-04-25 00:12:05,110 INFO === STAGE 2+3: Coding agent + IS grid search ===
+2026-04-25 00:12:05,110 INFO [deepseek] Loaded 23 strategies from checkpoint
+2026-04-25 00:12:05,111 INFO [qwen] Loaded 26 strategies from checkpoint
+2026-04-25 00:12:05,112 INFO [gemma] Loaded 16 strategies from checkpoint
+2026-04-25 00:12:05,113 INFO [llama] Loaded 43 strategies from checkpoint
+2026-04-25 00:12:05,113 INFO [mistral] Loaded 24 strategies from checkpoint
+2026-04-25 00:12:05,113 INFO Total valid strategies: 132 / 181 (72.9% pass rate)
+2026-04-25 00:12:05,114 INFO IS Sharpe: mean=0.107 std=0.442 range=[-2.443,2.324]
+2026-04-25 00:12:05,115 INFO === STAGE 4: Two-level clustering ===
+2026-04-25 00:12:05,115 INFO Loaded clustering checkpoint
+2026-04-25 00:12:05,115 INFO === STAGE 5: Walk-forward OOS ===
+2026-04-25 00:12:05,116 INFO Loaded OOS results: 1056 rows
+2026-04-25 00:12:05,138 INFO 
+          count   mean    std    min    25%    50%    75%    max
+alias                                                           
+deepseek  184.0 -0.208  0.832 -1.690 -0.832 -0.252  0.174  1.973
+gemma     128.0 -0.168  0.761 -1.896 -0.669 -0.275  0.179  1.842
+llama     344.0 -0.071  0.641 -1.354 -0.449  0.000  0.000  2.753
+mistral   192.0 -0.395  0.965 -3.009 -0.944 -0.279  0.209  1.836
+qwen      208.0 -0.181  0.737 -1.590 -0.704 -0.263  0.093  1.836
+2026-04-25 00:12:05,188 INFO DSR pass: 0/132 = 0.0%
+2026-04-25 00:12:05,195 INFO IS-OOS Pearson r=0.683, p=0.0000
+2026-04-25 00:12:05,282 INFO                             OLS Regression Results                            
+==============================================================================
+Dep. Variable:        mean_oos_sharpe   R-squared:                       0.467
+Model:                            OLS   Adj. R-squared:                  0.463
+Method:                 Least Squares   F-statistic:                     26.68
+Date:                Sat, 25 Apr 2026   Prob (F-statistic):           8.78e-07
+Time:                        00:12:05   Log-Likelihood:                -39.922
+No. Observations:                 132   AIC:                             83.84
+Df Residuals:                     130   BIC:                             89.61
+Df Model:                           1                                         
+Covariance Type:                  HC3                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         -0.2611      0.037     -7.144      0.000      -0.333      -0.189
+is_sharpe      0.6927      0.134      5.166      0.000       0.430       0.956
+==============================================================================
+Omnibus:                       50.114   Durbin-Watson:                   1.982
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):                8.015
+Skew:                           0.078   Prob(JB):                       0.0182
+Kurtosis:                       1.803   Cond. No.                         2.29
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+2026-04-25 00:12:05,303 INFO Cross-model summary:
+          n_strats  mean_oos  dsr_pass_rate  mean_is  nondegen
+alias                                                         
+deepseek        23    -0.208            0.0    0.078     0.435
+gemma           16    -0.168            0.0    0.362     0.938
+llama           43    -0.071            0.0    0.145     0.512
+mistral         24    -0.395            0.0   -0.093     0.583
+qwen            26    -0.181            0.0    0.096     0.538
+2026-04-25 00:12:05,933 INFO Saved C:\Users\User\Desktop\RMIT_Research\autoprompt_quant\experiments_reproducible\results\vn30\figures\fig1_results.png
+2026-04-25 00:12:06,233 INFO Saved C:\Users\User\Desktop\RMIT_Research\autoprompt_quant\experiments_reproducible\results\vn30\figures\fig2_walkforward.png
+2026-04-25 00:12:06,234 INFO === [VN30] experiment complete ===
+WARNING:tensorflow:From C:\Users\User\anaconda3\Lib\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+[SP500] Downloading 30 symbols via yfinance...
+  AAPL: 2011 rows
+  MSFT: 2011 rows
+  NVDA: 2011 rows
+  AMZN: 2011 rows
+  GOOGL: 2011 rows
+  META: 2011 rows
+  BRK-B: 2011 rows
+  LLY: 2011 rows
+  JPM: 2011 rows
+  V: 2011 rows
+  UNH: 2011 rows
+  XOM: 2011 rows
+  MA: 2011 rows
+  AVGO: 2011 rows
+  PG: 2011 rows
+  HD: 2011 rows
+  JNJ: 2011 rows
+  COST: 2011 rows
+  TSLA: 2011 rows
+  MRK: 2011 rows
+  CVX: 2011 rows
+  ABBV: 2011 rows
+  KO: 2011 rows
+  WMT: 2011 rows
+  BAC: 2011 rows
+  PEP: 2011 rows
+  CRM: 2011 rows
+  AMD: 2011 rows
+  MCD: 2011 rows
+  ACN: 2011 rows
+[SP500] Saved 30 symbols to C:\Users\User\Desktop\RMIT_Research\autoprompt_quant\experiments_reproducible\results\sp500\data\sp500_data.pkl
+2026-04-25 00:12:31,929 INFO === AutoPrompt-Quant [SP500] starting ===
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\User\anaconda3\Lib\logging\__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Users\User\anaconda3\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 64: character maps to <undefined>
+Call stack:
+  File "C:\Users\User\Desktop\RMIT_Research\autoprompt_quant\experiments_reproducible\run_sp500.py", line 93, in <module>
+    run_pipeline(
+  File "C:\Users\User\Desktop\RMIT_Research\autoprompt_quant\experiments_reproducible\src\shared.py", line 629, in run_pipeline
+    log.info(f'Symbols: {len(price_data)} loaded | IS: {is_start}\u2192{is_end} '
+Message: 'Symbols: 30 loaded | IS: 2018-01-01\u21922020-12-31 | OOS: 8 windows | TC=0.0005 | ann=252'
+Arguments: ()
+2026-04-25 00:12:31,950 INFO Ollama models available: ['deepseek-coder-v2:16b', 'qwen2.5-coder:14b', 'gemma2:9b', 'llama3.1:8b', 'mistral:7b']
+2026-04-25 00:12:31,950 INFO === STAGE 1: Meta-agent prompt generation ===
+2026-04-25 00:12:31,950 INFO [deepseek] Generating 50 prompts with deepseek-coder-v2:16b (LHS archetypes)...

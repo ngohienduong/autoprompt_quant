@@ -1,0 +1,23 @@
+# AutoPrompt-Quant reproducible experiments
+# Install: pip install -r requirements.txt
+
+# Core scientific stack
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+scikit-learn>=1.4
+statsmodels>=0.14
+
+# Clustering
+hdbscan>=0.8.33
+
+# Prompt diversity filtering
+sentence-transformers>=2.7
+
+# Data fetching
+yfinance>=0.2.40        # SP500 (free, no API key)
+quantvn                 # VN30 via QuantVN API (API key required)
+requests>=2.31          # Binance REST API (Crypto) + Ollama API
+
+# Plotting
+matplotlib>=3.8

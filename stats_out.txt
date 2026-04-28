@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\RMIT_Research\autoprompt_quant\experiments_reproducible\stats_check.py", line 2, in <module>
+    from scipy import stats
+ModuleNotFoundError: No module named 'scipy'
